@@ -64,6 +64,7 @@ public class Casilla {
         if (uso.equals(Casilla.USO_PROC)) this.paramsDecl = new ArrayList<>();
     }
 
+    public String getTipo(){return this.tipo;}
 
     public void setDeclarada(boolean declarada) {
         this.declarada = declarada;

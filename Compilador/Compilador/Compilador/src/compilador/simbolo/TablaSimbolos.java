@@ -31,7 +31,9 @@ import java.util.Map;
                 Notificacion.addError(analizadorLex.getLineaActual(),"Base negativa Double Fuera de Rango");
             }
         }
-
+        public String getTipo(String lexema){
+            return tablaSimbolos.get(lexema).getTipo();
+        }
 
         public  String toString() {
             {
