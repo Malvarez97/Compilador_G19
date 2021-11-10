@@ -1,0 +1,6 @@
+Tenemos errores del tipo "Shift/Reduce" en nuestra gramática en las sentencias:
+- conjunto_sentencias : conjunto_sentencias sentencia 
+- sentencia : sentencia . sentencia_declarativa
+- sentencia : sentencia . sentencia_ejecutable
+- condicion : condicion operador condicion
+Tratamos de salvarlas pero no pudimos. Entendemos la lógica de por qué se ocasiona este problema pero no pudimos evacuarlo

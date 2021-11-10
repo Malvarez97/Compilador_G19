@@ -1,0 +1,9 @@
+programa
+BEGIN
+    DOUBLE x, y, w, z;
+    BEGIN
+        y:= 2.2338585072014E-309;
+    END;
+END;
+
+//Ejemplo 11: DOUBLE con exponente fuera de rango//

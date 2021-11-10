@@ -1,0 +1,14 @@
+programa
+BEGIN
+    DOUBLE FUNC funcionao ( DOUBLE x)
+        CADENA a, b;
+    BEGIN
+        PRINT ( %string% ) ;
+        RETURN (x + y)
+    END;
+    BEGIN
+      x := y;
+    END;
+END;
+
+//Ejemplo 5 :Este ejemplo muestra  como es la declaracion de una funcion. //

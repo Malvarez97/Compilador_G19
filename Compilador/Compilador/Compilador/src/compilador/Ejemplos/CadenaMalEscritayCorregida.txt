@@ -1,0 +1,20 @@
+programa
+BEGIN
+    CADENA chau, y;
+    BEGIN
+        //COMENTARIO DE PRUEBA //
+        REPEAT (x := y; x <= z; y)
+            BEGIN
+                PRINT ( %hola
+                 %) ;
+                 %cadena_que_imprime% ) ;
+                 // COMO NO ESTA PERMITIDOS LOS SALTOS DE LINEA EN UNA CADENA, DESCARTA EL %hola%
+                                                                          E IMRPIME "cadena_que_imprime".
+                                                                          EN CASO DE BORRAR ESTA SEGUNDA CADENA,
+                                                                          EL CODIGO SE ROMPERÁ//
+            END ;
+            BREAK ;
+    END;
+END;
+
+//Ejemplo 2 :Este ejemplo tien un salto de linea no permitido que se descarta y luego es arreglado en la siguiente linea.//

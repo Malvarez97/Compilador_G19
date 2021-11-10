@@ -1,0 +1,14 @@
+programa
+BEGIN
+    CADENA _Variable_auxiliar_33, y;
+    BEGIN
+        //COMENTARIO DE PRUEBA
+        REPEAT (x := y;  x <= z; y)
+            BEGIN
+                PRINT ( %hola% ) ;
+            END ;
+            BREAK ;
+    END;
+END;
+
+// Ejemplo 4 :En este ejemplo se muestra un comentario mal escrito. //

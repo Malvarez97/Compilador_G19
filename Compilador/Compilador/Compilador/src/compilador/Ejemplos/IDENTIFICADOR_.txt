@@ -1,0 +1,12 @@
+programa
+BEGIN
+    CADENA _Variable_auxiliar_33, y;
+    BEGIN
+        REPEAT (x := y; x <= z; y)
+            BEGIN
+                PRINT ( %hola% ) ;
+            END ;
+            BREAK ;
+    END;
+END;
+//Ejemplo 6 : Ejemplo de variable con identificador de "_"//

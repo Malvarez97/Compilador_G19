@@ -1,0 +1,12 @@
+programa
+BEGIN
+    ULONG x, y;
+       TRY
+            x := 6;
+       CATCH
+            BEGIN
+                x := 4;
+            END;
+END;
+
+////

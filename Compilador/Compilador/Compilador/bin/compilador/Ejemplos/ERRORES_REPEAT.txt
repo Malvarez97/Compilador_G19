@@ -1,0 +1,13 @@
+programa
+BEGIN
+    CADENA hola, y;
+    BEGIN
+        REPEAT (x := 4; x <= z; y)
+            BEGIN
+                PRINT ( %hola% ) ;
+            END ;
+            BREAK
+    END;
+END;
+
+//Ejemplo 15 : Error de REPEAT donde no se ingresa eL ';' final//

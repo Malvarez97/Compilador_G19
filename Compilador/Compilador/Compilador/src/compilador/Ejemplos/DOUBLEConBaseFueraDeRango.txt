@@ -1,0 +1,9 @@
+programa
+BEGIN
+    DOUBLE x, y, w, z;
+    BEGIN
+        d := 1.80931348623157E+308;
+    END;
+END;
+
+//Ejemplo 10 : Double con base fuera de rango.//

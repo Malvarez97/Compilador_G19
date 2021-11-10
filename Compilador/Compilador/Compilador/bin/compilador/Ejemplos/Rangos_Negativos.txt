@@ -1,0 +1,23 @@
+programa
+BEGIN
+    ULONG x, y;
+    BEGIN
+        x := 2.2350738585072014E-308;
+    END;
+    BEGIN
+        y := -1.7976931348623157E+308;
+    END;
+    BEGIN
+        y := -1.7976931348623157E+;
+    END;
+    BEGIN
+        y := 1.E+308;
+    END;
+    BEGIN
+        y := -1.7976931348623157E308;
+    END;
+END;
+
+//Ejemplo 12 :Declaracion Double limite dentro del rango (positivo y negativo) con distintos ejemplos de numeros reales con y sin mantisa, con y sin parte decimal
+y con y sin exponente (negativo y positivo).//
+

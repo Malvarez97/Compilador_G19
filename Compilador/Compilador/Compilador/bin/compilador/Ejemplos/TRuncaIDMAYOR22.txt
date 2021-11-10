@@ -1,0 +1,13 @@
+programa
+BEGIN
+    CADENA aaaaaaaaaaaaaaaaaaaaaaabbbb, y;
+    BEGIN
+        REPEAT (x := y; x <= z; y)
+            BEGIN
+                PRINT ( %hola% ) ;
+            END ;
+            BREAK ;
+    END;
+END;
+
+//Ejemplo 9 : Ejemplo de identificador de mas de 22 caracteres, se queda con los primeros 22 caracteres.//

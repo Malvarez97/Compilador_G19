@@ -1,0 +1,13 @@
+programa
+BEGIN
+    ULONG x, _Variable_auxiliar_33, y;
+    BEGIN
+        //COMENTARIO DE PRUEBA //
+        REPEAT (x := y ; x == y ; y)
+            BEGIN
+                PRINT ( %hola% ) ;
+            END ;
+    END;
+END;
+
+//Ejemplo 1 :este programa prueba la sentencia repeat, la declaracion de una variable que arranca con "_" y una impresion PRINT//
