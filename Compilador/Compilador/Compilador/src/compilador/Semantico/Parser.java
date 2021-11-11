@@ -493,6 +493,7 @@ public int yylex() {
         int token = aLexico.tokengenerado();
         System.out.println(token+"->"+ Compilador.traductor(token));
         yylval = new ParserVal(aLexico.ultimoLexemaGenerado);
+        // aca mete los valores en una estructura para leer desde ahi(calculo)
         return token;
     }
 
