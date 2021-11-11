@@ -10,16 +10,27 @@ import compilador.util.Notificacion;
 
 %%
 
-programa : ID BEGIN conjunto_sentencias_declarativas conjunto_sentencias_ejecutables END ';'
+programa : ID BEGIN conjunto_sentencias_declarativas sentencia_ejecutable END ';'
 		;
 
 conjunto_sentencias_declarativas : sentencia_declarativa
-		| conjunto_sentencias_declarativas sentencia_declarativa 
-		| BREAK';'
+		| conjunto_sentencias_declarativas sentencia_declarativa
 		;
 
-conjunto_sentencias_ejecutables : sentencia_ejecutable
-		| conjunto_sentencias_ejecutables sentencia_ejecutable
+sentencia_ejecutable :  ejecutable
+		| BEGIN conjunto_sentencias_ejecutables END ';'
+		| TRY ejecutable CATCH BEGIN ejecutable END ';'
+		| error_sentencias_ejecutables
+		;
+
+ejecutable : asignacion ';'
+		| sentencia_control_repeat ';'
+		| sentencia_salida
+		| sentencia_if
+		;
+
+error_sentencias_ejecutables : TRY ejecutable BEGIN ejecutable END ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() +  "| falta el CATCH");}
+		| TRY ejecutable CATCH ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta el ejecutable");}
 		;
 
 sentencia_declarativa : tipo lista_variables ';'
@@ -45,18 +56,10 @@ conjunto_sentencias_ejecutables_funcion : ejecutable
 
 lista_variables : ID
 		| lista_variables ',' ID
-		;	
-
-sentencia_ejecutable : BEGIN ejecutable END ';'
-		| TRY ejecutable CATCH BEGIN ejecutable END ';'
-		| sentencia_if
-		| error_sentencias_ejecutables
 		;
 
-error_sentencias_ejecutables : ejecutable END ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() +  "| falta el BEGIN");}
-		| TRY ejecutable BEGIN ejecutable END ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() +  "| falta el CATCH");}
-		| TRY ejecutable CATCH ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta el ejecutable");}
-		| BEGIN ejecutable END {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta el ';' ");}
+conjunto_sentencias_ejecutables : ejecutable
+		| conjunto_sentencias_ejecutables ejecutable
 		;
 
 
@@ -76,17 +79,12 @@ rama_else : ELSE sentencia_ejecutable
 		;
 
 
-ejecutable : asignacion  
-		| sentencia_control_repeat
-		| sentencia_salida 
-		;
-
-sentencia_control_repeat : REPEAT '(' asignacion condicion_repeat ';' factor ')' sentencia_ejecutable
-		| REPEAT '(' asignacion condicion_repeat ';' factor ')' sentencia_ejecutable BREAK ';'
+sentencia_control_repeat : REPEAT '(' asignacion ';' condicion_repeat ';' factor ')' sentencia_ejecutable
+		| REPEAT '(' asignacion ';' condicion_repeat ';' factor ')' sentencia_ejecutable BREAK
 		| error_repeat
 		;
 
-error_repeat : REPEAT '(' asignacion condicion_repeat ';' factor ')' sentencia_ejecutable BREAK {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() +  "| falta el ';' final "); }
+error_repeat : REPEAT '('  condicion_repeat ';' factor ')' sentencia_ejecutable BREAK {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() +  "| falta la asignación "); }
 		;
 
 operador : AND
@@ -117,7 +115,7 @@ tipo : ULONG
 condicion_repeat : ID comparador expresion
 		;	
 
-asignacion : ID ASIGNACION expresion ';'
+asignacion : ID ASIGNACION expresion
 		;
 
 condicion : condicion comparador expresion 
