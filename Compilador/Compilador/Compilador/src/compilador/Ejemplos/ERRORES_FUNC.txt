@@ -3,12 +3,10 @@ BEGIN
     DOUBLE FUNC funcion_error ()
         CADENA a, b;
     BEGIN
-        PRINT ( %string% ) ;
+        PRINT ( %string% )
         RETURN (x + y)
     END;
-    BEGIN
       x := y;
-    END;
 END;
 
 //Ejemplo 14 : Error de FUNC donde no se ingresa el parámetro.//

@@ -1,12 +1,8 @@
 programa
 BEGIN
     CADENA hola, y;
-    BEGIN
         REPEAT (x := 4; x <= z; y)
-            BEGIN
-                PRINT ( %hola% ) ;
-            END ;
-    END;
+                PRINT ( %hola% );
 END;
 
 //Ejemplo 8 : Ejemplo de Repeat con un print de una cadena.//
