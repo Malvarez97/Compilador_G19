@@ -21,13 +21,12 @@ public class Main {
 			System.out.println("Ingrese 6 si desea compilar ejemplo de identificador_");
 			System.out.println("Ingrese 7 si desea compilar ejemplo con PRE");
 			System.out.println("Ingrese 8 si desea compilar ejemplo REPEAT y print cadena ");
-			System.out.println("Ingrese 9 si desea compilar ejemplo truncar id mayor a 32 ");
+			System.out.println("Ingrese 9 si desea compilar ejemplo truncar id mayor a 22 caractéres");
 			System.out.println("Ingrese 10 si desea compilar ejemplo Valores Doubles positivos ");
 			System.out.println("Ingrese 11 si desea compilar ejemplo Variablesytiposvaros");
 			System.out.println("Ingrese 12 si desea compilar ejemplo de Rangos Negativos");
 			System.out.println("Ingrese 13 si desea compilar ejemplo de TRY CATCH");
 			System.out.println("Ingrese 14 si desea compilar ejemplo con errores de FUNC");
-		    System.out.println("Ingrese 15 si desea compilar ejemplo con errores de REPEAT");
 
 			Scanner opcion =new Scanner(System.in);
 			int num= opcion.nextInt();
@@ -75,8 +74,6 @@ public class Main {
 				case 14:
 					compilador.ejecutar(base+"\\ERRORES_FUNC.txt");
 					return;
-				case 15: compilador.ejecutar(base+"\\ERRORES_REPEAT.txt");
-				return;
 				default:
 					System.out.println("Ingreso mal el numero del caso deseado ");
 			}

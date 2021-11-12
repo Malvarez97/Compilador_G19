@@ -3,7 +3,7 @@ BEGIN
     DOUBLE FUNC funcionao ( DOUBLE x)
         CADENA a, b;
     BEGIN
-        PRINT ( %string% ) ;
+        PRINT ( %string% )
         RETURN (x + y)
     END;
     BEGIN

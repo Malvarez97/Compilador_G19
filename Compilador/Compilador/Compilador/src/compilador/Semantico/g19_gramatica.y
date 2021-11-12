@@ -62,7 +62,6 @@ conjunto_sentencias_ejecutables : ejecutable
 		| conjunto_sentencias_ejecutables ejecutable
 		;
 
-
 sentencia_if : IF '(' condicion ')' rama_then_sola ENDIF
    		| IF '(' condicion ')' rama_then_sola rama_else ENDIF
    		| error_sentencia_if
@@ -99,7 +98,7 @@ comparador :  '<'
 		| IGUAL_IGUAL 
 		;
 
-sentencia_salida : PRINT '(' CADENA ')' ';'
+sentencia_salida : PRINT '(' CADENA ')'
 		| error_sentencia_salida
 		;
 

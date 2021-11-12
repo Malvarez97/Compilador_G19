@@ -7,9 +7,7 @@ programa
             PRE: (x == 5.2350738585072014E-3);
             RETURN (x + 1.5E4);
         END;
-        BEGIN
         N := B;
-        END;
     END;
 
 //Ejemplo 7 : Ejemplo de funcion con PRE//

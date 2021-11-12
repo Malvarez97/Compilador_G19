@@ -1,14 +1,12 @@
 programa
 BEGIN
     CADENA _Variable_auxiliar_33, y;
-    BEGIN
         //COMENTARIO DE PRUEBA //
         REPEAT (x := y; x <= z; y)
             BEGIN
-                PRINT ( %hola% ) ;
+                PRINT ( %hola% )
             END ;
             BREAK ;
-    END;
 END;
 
 // Ejemplo 3 :En este ejemplo se incorporó un comentario entre "/" para mostrar que funciona //

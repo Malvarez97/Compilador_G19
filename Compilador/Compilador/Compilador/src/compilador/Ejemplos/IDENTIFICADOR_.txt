@@ -4,7 +4,7 @@ BEGIN
     BEGIN
         REPEAT (x := y; x <= z; y)
             BEGIN
-                PRINT ( %hola% ) ;
+                _Variable_auxiliar_33 := y;
             END ;
             BREAK ;
     END;
