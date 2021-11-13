@@ -18,6 +18,9 @@ public class Terceto {
     public static ArrayList<String> variables= new ArrayList<String>();
     public static ArrayList<String> nombrefuncion= new ArrayList<String>();
     public static ArrayList<String> nombreparametro= new ArrayList<String>();
+    public static ArrayList<Integer> pilaSaltos = new ArrayList<Integer>();
+    public static ArrayList<Terceto> pilaExpreseionRepeat = new ArrayList<Terceto>();
+
 
 
 
@@ -38,9 +41,9 @@ public class Terceto {
     }
 
 
-
-    public boolean tiposCompatibles(){
-        if (!tablaSimbolos.getTipo(operando1).equals(tablaSimbolos.getTipo(operando2).equals(tipo))) {
+    // chequeo de tipos compatibles
+    public boolean tiposCompatibles( String op1, String op2){
+        if (!tablaSimbolos.getTipo(op1).equals(tablaSimbolos.getTipo(op2).equals(tipo))) {
             Notificacion.addError(al.getLineaActual(),"Tipos Incompatibles");
             return false;
         }
@@ -73,9 +76,41 @@ public class Terceto {
         }
         variables.clear();
     }
-
-
-
+    // se queda con los valores del numero del terceto
+    public void apilarSalto(String numeroTerceto){
+        if (!Notificacion.hayErrores()){
+            pilaSaltos.add((Integer.parseInt(numeroTerceto.substring(1,numeroTerceto.length()-1))));
+        }
+    }
+    // por ahora fueron tomadas como ulong en el repeat al  no tener el tipo Int
+    public void apilarExpresionRepeat(String operando1,String operando2){
+        if(!Notificacion.hayErrores()){
+            if(tablaSimbolos.getTipo(operando1).equals("ULONG") && tablaSimbolos.getTipo(operando2).equals("ULONG"))
+            pilaExpreseionRepeat.add(new Terceto(":=",operando1,null,"ULONG",tablaSimbolos));
+            pilaExpreseionRepeat.add(new Terceto("+",operando1,operando2,"ULONG",tablaSimbolos)); // ver bien que haria acaa, como lo realizaria
+        }
+    }
+    public void desapilarExpresionRepeat(){
+        if(!Notificacion.hayErrores()) {
+            tercetos.add(pilaExpreseionRepeat.remove(pilaExpreseionRepeat.size()-1)); // desapilo el primer operando del for
+            tercetos.add(pilaExpreseionRepeat.remove(pilaExpreseionRepeat.size()-1)); // desapilo el segundo operando del for
+            tercetos.get(tercetos.size()-1).operando2 = new String("[" + (tercetos.size()-2)+ "]");
+            }
+        }
+    public void desapilarSalto(Integer posicion){
+        if(!Notificacion.hayErrores()){
+            Integer pos = pilaSaltos.get(pilaSaltos.size()-1);
+            tercetos.get(pos).operando2= new String ("["+posicion+"]");
+            pilaSaltos.remove(pilaSaltos.size()-1);
+        }
+    }
+    public String CrearTerceto(String operador,String operando1,String operando2, String tipo){
+        if(!Notificacion.hayErrores()&& tiposCompatibles(operando1,operando2)){
+            crearTerceto(operador, operando1, operando2, tipo);
+            return new String("["+Integer.toString(tercetos.size()-1)+"]");
+        }
+        return null;
+    }
 
     public static void  CrearCodigo(){}
 
