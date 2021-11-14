@@ -68,13 +68,12 @@ public class Terceto {
     public String cambiarVariableAmbito (String variable){
         return ambito+"."+variable;
     }
+
     // hay que setear el uso de la varibla como por ejemplo, variable, nombre funcion, nombre de parametro, etc
-    public void agregarUsoVaribalesTS(String uso){
-        for (String s: variables){
+    public void agregarUsoVaribalesTS(String valor,String uso){
             // aca hay que poner el uso, el problema es de donde lo saco
-            tablaSimbolos.getEntrada(s).setUso("poner uso ");
-        }
-        variables.clear();
+
+
     }
     // se queda con los valores del numero del terceto
     public void apilarSalto(String numeroTerceto){
@@ -112,6 +111,11 @@ public class Terceto {
         return null;
     }
 
+
     public static void  CrearCodigo(){}
+
+    public void agregarUsoVariablesTS(String sval, String nombre_programa) {
+            tablaSimbolos.getEntrada(sval).setUso(nombre_programa);
+        }
 
 }

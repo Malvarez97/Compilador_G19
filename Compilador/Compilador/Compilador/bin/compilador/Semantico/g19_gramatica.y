@@ -3,6 +3,7 @@ import compilador.AnalizadorLex;
 import compilador.Compilador;
 import compilador.simbolo.TablaSimbolos;
 import compilador.util.Notificacion;
+import compilador.Terceto;
 %}
 
 %token ID CADENA UNTIL IF THEN ELSE ENDIF PRINT AND OR FUNC RETURN BEGIN END BREAK CTE_ULONG CTE_DOUBLE DOUBLE ULONG REPEAT TRY CATCH ASIGNACION PRE MENOR_IGUAL MAYOR_IGUAL IGUAL_IGUAL DISTINTO
@@ -10,7 +11,7 @@ import compilador.util.Notificacion;
 
 %%
 
-programa : ID BEGIN conjunto_sentencias_declarativas sentencia_ejecutable END ';'
+programa : ID{t.agregarUsoVariablesTS($1.sval,"nombre_programa");} BEGIN conjunto_sentencias_declarativas sentencia_ejecutable END ';'
 		;
 
 conjunto_sentencias_declarativas : sentencia_declarativa
@@ -34,16 +35,15 @@ error_sentencias_ejecutables : TRY ejecutable BEGIN ejecutable END ';' {Notifica
 		;
 
 sentencia_declarativa : tipo lista_variables ';'
-		| tipo FUNC ID '(' parametro ')' conjunto_sentencias_declarativas_funcion BEGIN conjunto_sentencias_ejecutables_funcion RETURN '(' expresion ')' END ';'
-		| FUNC tipo ID '(' parametro ')' conjunto_sentencias_declarativas_funcion BEGIN PRE':' '(' condicion ')' ';' RETURN '(' expresion ')' ';' END ';'
-		| FUNC ID ',' lista_variables';'
+		| tipo FUNC ID '(' parametro ')' conjunto_sentencias_declarativas_funcion BEGIN conjunto_sentencias_ejecutables_funcion RETURN '(' expresion ')' END ';'{t.agregarUsoVariablesTS($3.sval,"nombre_funcion");}
+		| FUNC tipo ID '(' parametro ')' conjunto_sentencias_declarativas_funcion BEGIN PRE':' '(' condicion ')' ';' RETURN '(' expresion ')' ';' END ';'{t.agregarUsoVariablesTS($3.sval,"nombre_funcion");}
+		| FUNC ID ',' lista_variables';'{t.agregarUsoVariablesTS($2.sval,"variable");}
 		| error_sentencias_declarativas
 		;
 
 error_sentencias_declarativas : tipo ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta la lista de lista_variables");}
 		| FUNC ',' lista_variables ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta el ID");}
 		| FUNC tipo ID '(' ')' conjunto_sentencias_declarativas_funcion BEGIN PRE':' '(' condicion ')' ';' RETURN '(' expresion ')' ';' END ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta el parametro");}
-		| tipo FUNC ID '('  ')' conjunto_sentencias_declarativas_funcion BEGIN conjunto_sentencias_ejecutables_funcion RETURN '(' expresion ')' END {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta el parametro");}
 		| FUNC tipo ID '(' parametro ')' conjunto_sentencias_declarativas_funcion BEGIN ':' '(' condicion ')' ';' RETURN '(' expresion ')' ';' END ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta el PRE");}
 		;
 
@@ -54,8 +54,8 @@ conjunto_sentencias_ejecutables_funcion : ejecutable
 		| conjunto_sentencias_ejecutables_funcion ejecutable
 		;
 
-lista_variables : ID
-		| lista_variables ',' ID
+lista_variables : ID {t.agregarUsoVariablesTS($1.sval,"variable");}
+		| lista_variables ',' ID{t.agregarUsoVariablesTS($3.sval,"variable");}
 		;
 
 conjunto_sentencias_ejecutables : ejecutable
@@ -138,18 +138,22 @@ factor : ID
         | '-' CTE_DOUBLE{ ts.cambiarNegativo($2.sval,aLexico); }
         ;
 
-parametro :tipo ID
+parametro :tipo ID {String variable = "parametro_funcion";
+                    t.agregarUsoVariablesTS($2.sval,variable);}
 		;
 
 %%
 private  AnalizadorLex aLexico;
 private TablaSimbolos ts;
 private String aux_negacion = "";
+Terceto t;
 
 
 public Parser (AnalizadorLex aLexico, TablaSimbolos ts) {
 this.ts= ts;
 this.aLexico=aLexico;
+this.t=new Terceto(null,null,null,null,aLexico.getTs());
+
 }
 
 public int yylex() {

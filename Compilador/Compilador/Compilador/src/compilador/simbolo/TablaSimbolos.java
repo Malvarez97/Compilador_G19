@@ -77,7 +77,11 @@ import java.util.Map;
             Casilla entrada = tablaSimbolos.get(lexema);
             entrada.setDeclarada(declarada);
         }
-
+        public boolean existeLexema(String lexema){
+            if (tablaSimbolos.containsKey(lexema))
+                return true;
+            return false;
+        }
 
     }
 

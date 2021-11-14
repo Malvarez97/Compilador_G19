@@ -13,12 +13,18 @@ public class AnalizadorLex {
 	public short ultimoTokenGenerado = -1;
 	public boolean finalizo=false;
 	public String ultimoLexemaGenerado;
+	public TablaSimbolos ts;
 	
 	
 	 public AnalizadorLex(CodigoFuente fuente, TablaSimbolos tablaS){
 	        this.cod_Fuente = fuente;
+			this.ts= tablaS;
 	        this.maquinaEstados = new MaquinaEstados(this, fuente,tablaS, iniciarTpalabrasR());
 	    }
+
+	public TablaSimbolos getTs() {
+		return ts;
+	}
 
 	public CodigoFuente getCod_Fuente() {
 		return cod_Fuente;

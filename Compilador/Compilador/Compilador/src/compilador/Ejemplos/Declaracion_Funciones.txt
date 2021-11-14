@@ -1,13 +1,14 @@
 programa
 BEGIN
+    FUNC y,z ;
     DOUBLE FUNC funcionao ( DOUBLE x)
         CADENA a, b;
     BEGIN
         PRINT ( %string% )
-        RETURN (x + y)
+        RETURN (x + z)
     END;
     BEGIN
-      x := y;
+      x := z;
     END;
 END;
 
