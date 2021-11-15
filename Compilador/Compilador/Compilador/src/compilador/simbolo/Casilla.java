@@ -16,7 +16,7 @@ public class Casilla {
      * Atributos comunes.
      */
     private final int token;
-    private final String lexema;
+    private String lexema;
     private String tipo;
     private String uso = "-";
     private boolean declarada;
@@ -62,6 +62,10 @@ public class Casilla {
     public void setUso(String uso) {
         this.uso = uso;
         if (uso.equals(Casilla.USO_PROC)) this.paramsDecl = new ArrayList<>();
+    }
+
+    public void setLexema(String lexema) {
+        this.lexema = lexema;
     }
 
     public String getTipo(){return this.tipo;}

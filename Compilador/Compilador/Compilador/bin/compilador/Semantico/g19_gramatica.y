@@ -11,7 +11,9 @@ import compilador.Terceto;
 
 %%
 
-programa : ID{t.agregarUsoVariablesTS($1.sval,"nombre_programa");} BEGIN conjunto_sentencias_declarativas sentencia_ejecutable END ';'
+programa : ID BEGIN conjunto_sentencias_declarativas sentencia_ejecutable END ';'{ t.nombrePrograma($1.sval);
+                                                                                   t.agregarUsoVariablesTS($1.sval,"nombre_programa");
+                                                                                  }
 		;
 
 conjunto_sentencias_declarativas : sentencia_declarativa
@@ -35,8 +37,15 @@ error_sentencias_ejecutables : TRY ejecutable BEGIN ejecutable END ';' {Notifica
 		;
 
 sentencia_declarativa : tipo lista_variables ';'
-		| tipo FUNC ID '(' parametro ')' conjunto_sentencias_declarativas_funcion BEGIN conjunto_sentencias_ejecutables_funcion RETURN '(' expresion ')' END ';'{t.agregarUsoVariablesTS($3.sval,"nombre_funcion");}
-		| FUNC tipo ID '(' parametro ')' conjunto_sentencias_declarativas_funcion BEGIN PRE':' '(' condicion ')' ';' RETURN '(' expresion ')' ';' END ';'{t.agregarUsoVariablesTS($3.sval,"nombre_funcion");}
+		| tipo FUNC ID '(' parametro ')' conjunto_sentencias_declarativas_funcion BEGIN conjunto_sentencias_ejecutables_funcion RETURN '(' expresion ')' END ';'{
+                                                                                                                                                                    //Cambiara el ambito de las variables en caso de ser necesario
+                                                                                                                                                                    t.cambiarAmbitoTerceto($3.sval);
+                                                                                                                                                                    t.agregarUsoVariablesTS($3.sval,"nombre_funcion");
+
+		                                                                                                                                                         }
+		| FUNC tipo ID '(' parametro ')' conjunto_sentencias_declarativas_funcion BEGIN PRE':' '(' condicion ')' ';' RETURN '(' expresion ')' ';' END ';'{t.cambiarAmbitoTerceto($3.sval);
+		                                                                                                                                                   t.agregarUsoVariablesTS($3.sval,"nombre_funcion");
+		                                                                                                                                                   }
 		| FUNC ID ',' lista_variables';'{t.agregarUsoVariablesTS($2.sval,"variable");}
 		| error_sentencias_declarativas
 		;
@@ -54,8 +63,10 @@ conjunto_sentencias_ejecutables_funcion : ejecutable
 		| conjunto_sentencias_ejecutables_funcion ejecutable
 		;
 
-lista_variables : ID {t.agregarUsoVariablesTS($1.sval,"variable");}
-		| lista_variables ',' ID{t.agregarUsoVariablesTS($3.sval,"variable");}
+lista_variables : ID {t.agregarUsoVariablesTS($1.sval,"variable");
+                      t.cambiarAmbitoVariable($1.sval);}
+		| lista_variables ',' ID{t.agregarUsoVariablesTS($3.sval,"variable");
+		                         t.cambiarAmbitoVariable($3.sval);}
 		;
 
 conjunto_sentencias_ejecutables : ejecutable
@@ -138,8 +149,7 @@ factor : ID
         | '-' CTE_DOUBLE{ ts.cambiarNegativo($2.sval,aLexico); }
         ;
 
-parametro :tipo ID {String variable = "parametro_funcion";
-                    t.agregarUsoVariablesTS($2.sval,variable);}
+parametro :tipo ID { t.agregarUsoVariablesTS($2.sval,"variable");}
 		;
 
 %%
