@@ -20,7 +20,6 @@ conjunto_sentencias_declarativas : sentencia_declarativa
 sentencia_ejecutable :  ejecutable
 		| BEGIN conjunto_sentencias_ejecutables END ';'
 		| TRY ejecutable CATCH BEGIN ejecutable END ';'
-		| error_sentencias_ejecutables
 		;
 
 ejecutable : asignacion ';'
@@ -29,22 +28,10 @@ ejecutable : asignacion ';'
 		| sentencia_if
 		;
 
-error_sentencias_ejecutables : TRY ejecutable BEGIN ejecutable END ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() +  "| falta el CATCH");}
-		| TRY ejecutable CATCH ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta el ejecutable");}
-		;
-
 sentencia_declarativa : tipo lista_variables ';'
 		| tipo FUNC ID '(' parametro ')' conjunto_sentencias_declarativas_funcion BEGIN conjunto_sentencias_ejecutables_funcion RETURN '(' expresion ')' END ';'
 		| FUNC tipo ID '(' parametro ')' conjunto_sentencias_declarativas_funcion BEGIN PRE':' '(' condicion ')' ';' RETURN '(' expresion ')' ';' END ';'
 		| FUNC ID ',' lista_variables';'
-		| error_sentencias_declarativas
-		;
-
-error_sentencias_declarativas : tipo ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta la lista de lista_variables");}
-		| FUNC ',' lista_variables ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta el ID");}
-		| FUNC tipo ID '(' ')' conjunto_sentencias_declarativas_funcion BEGIN PRE':' '(' condicion ')' ';' RETURN '(' expresion ')' ';' END ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta el parametro");}
-		| tipo FUNC ID '('  ')' conjunto_sentencias_declarativas_funcion BEGIN conjunto_sentencias_ejecutables_funcion RETURN '(' expresion ')' END {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta el parametro");}
-		| FUNC tipo ID '(' parametro ')' conjunto_sentencias_declarativas_funcion BEGIN ':' '(' condicion ')' ';' RETURN '(' expresion ')' ';' END ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta el PRE");}
 		;
 
 conjunto_sentencias_declarativas_funcion : tipo lista_variables ';'
@@ -64,11 +51,6 @@ conjunto_sentencias_ejecutables : ejecutable
 
 sentencia_if : IF '(' condicion ')' rama_then_sola ENDIF
    		| IF '(' condicion ')' rama_then_sola rama_else ENDIF
-   		| error_sentencia_if
-		;
-
-error_sentencia_if : IF '(' condicion rama_then_sola ENDIF {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() +  "| falta el parentesis de cierre ')' "); }
-		| IF '(' condicion ')' rama_else ENDIF {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta la rama 'THEN' "); }
 		;
 
 rama_then_sola : THEN sentencia_ejecutable
@@ -80,10 +62,6 @@ rama_else : ELSE sentencia_ejecutable
 
 sentencia_control_repeat : REPEAT '(' asignacion ';' condicion_repeat ';' factor ')' sentencia_ejecutable
 		| REPEAT '(' asignacion ';' condicion_repeat ';' factor ')' sentencia_ejecutable BREAK
-		| error_repeat
-		;
-
-error_repeat : REPEAT '('  condicion_repeat ';' factor ')' sentencia_ejecutable BREAK {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() +  "| falta la asignación "); }
 		;
 
 operador : AND
@@ -99,11 +77,6 @@ comparador :  '<'
 		;
 
 sentencia_salida : PRINT '(' CADENA ')'
-		| error_sentencia_salida
-		;
-
-error_sentencia_salida : PRINT CADENA ')' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() +  "| falta el parentesis de apertura de la sentencia PRINT ");}
-		| PRINT '(' ')' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() +  "| falta la cadena a imprimir");}
 		;
 
 tipo : ULONG  
