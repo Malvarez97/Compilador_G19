@@ -11,7 +11,13 @@ import compilador.Terceto;
 
 %%
 
-programa : ID BEGIN conjunto_sentencias_declarativas sentencia_ejecutable END ';'{ t.nombrePrograma($1.sval);
+programa : ID {System.out.println(ambitoActual);
+ambitoActual=$1.sval;
+System.out.println("imprime al final"+ambitoActual);
+ }BEGIN conjunto_sentencias_declarativas sentencia_ejecutable END ';'{ t.cambiarAmbitoTerceto($1.sval);
+                                                                                    System.out.println(ambitoActual);
+                                                                                    ambitoActual=$1.sval;
+                                                                                    System.out.println("imprime al final"+ambitoActual);
                                                                                    t.agregarUsoVariablesTS($1.sval,"nombre_programa");
                                                                                   }
 		;
@@ -39,12 +45,18 @@ error_sentencias_ejecutables : TRY ejecutable BEGIN ejecutable END ';' {Notifica
 sentencia_declarativa : tipo lista_variables ';'
 		| tipo FUNC ID '(' parametro ')' conjunto_sentencias_declarativas_funcion BEGIN conjunto_sentencias_ejecutables_funcion RETURN '(' expresion ')' END ';'{
                                                                                                                                                                     //Cambiara el ambito de las variables en caso de ser necesario
+                                                                                                                                                                    System.out.println("a"+ambitoActual);
+                                                                                                                                                                    ambitoActual=ambitoActual+"."+$3.sval;
+                                                                                                                                                                    System.out.println(ambitoActual);
                                                                                                                                                                     t.cambiarAmbitoTerceto($3.sval);
                                                                                                                                                                     t.agregarUsoVariablesTS($3.sval,"nombre_funcion");
 
 		                                                                                                                                                         }
 		| FUNC tipo ID '(' parametro ')' conjunto_sentencias_declarativas_funcion BEGIN PRE':' '(' condicion ')' ';' RETURN '(' expresion ')' ';' END ';'{t.cambiarAmbitoTerceto($3.sval);
 		                                                                                                                                                   t.agregarUsoVariablesTS($3.sval,"nombre_funcion");
+		                                                                                                                                                   System.out.println("a"+ambitoActual);
+		                                                                                                                                                   ambitoActual=ambitoActual+"."+$3.sval;
+		                                                                                                                                                   System.out.println(ambitoActual);
 		                                                                                                                                                   }
 		| FUNC ID ',' lista_variables';'{t.agregarUsoVariablesTS($2.sval,"variable");}
 		| error_sentencias_declarativas
@@ -157,7 +169,7 @@ private  AnalizadorLex aLexico;
 private TablaSimbolos ts;
 private String aux_negacion = "";
 Terceto t;
-
+String ambitoActual;
 
 public Parser (AnalizadorLex aLexico, TablaSimbolos ts) {
 this.ts= ts;

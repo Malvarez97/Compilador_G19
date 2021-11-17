@@ -22,15 +22,16 @@ public class Terceto {
     public static ArrayList<String> nombreparametro = new ArrayList<String>();
     public static ArrayList<Integer> pilaSaltos = new ArrayList<Integer>();
     public static ArrayList<Terceto> pilaExpreseionRepeat = new ArrayList<Terceto>();
-    HashMap<String, List<String>> variables_Ambito = new HashMap<>();
     public String nombreprograma;
+    public static ArrayList<String> variables_Ambito  = new ArrayList<String>();
 
     public static int contadorVariableAuxiliar = 0;
     public TablaSimbolos tablaSimbolos;
     ArrayList<Terceto> tercetos = new ArrayList<Terceto>();
 
+
     HashMap<String, String> noTerminalTercetos = new HashMap<String, String>();
-    String ambito = "";
+    String ambito ="";
 
     public Terceto(String operador, String operando1, String operando2, String tipo, TablaSimbolos tablaSimbolos) {
         this.operador = operador;
@@ -72,11 +73,16 @@ public class Terceto {
         ambito=nombreprograma;
     }
 
+    public void cambiarAmbitoFuncion(){
+        for(int i=1; i<this.variables_Ambito.size(); i++){
+            Casilla aux = tablaSimbolos.getEntrada(this.variables_Ambito.get(i));
+            aux.setLexema(this.variables_Ambito.get(0)+"."+this.variables_Ambito.get(i));
+        }
+    }
+
     public void cambiarAmbitoTerceto(String variable) {
         { // el que esta al final es que lee primero, lee de abajo para arriba
-            Casilla aux =tablaSimbolos.getEntrada(variable);
-            aux.setLexema(ambito + "." + variable);
-            ambito = ambito + "." + variable;
+            this.variables_Ambito.add(0,variable);
         }
     }
 
@@ -122,10 +128,11 @@ public class Terceto {
         return null;
     }
 
-    public void cambiarAmbitoVariable(String variable ){
+    public void cambiarAmbitoVariable(String variable){
 
         Casilla aux =tablaSimbolos.getEntrada(variable);
-        aux.setLexema(ambito+"."+variable);
+        ambito= ambito+"."+variable;
+        aux.setLexema(variable);
         }
 
     public static void  CrearCodigo(){}
@@ -134,4 +141,11 @@ public class Terceto {
             tablaSimbolos.getEntrada(sval).setUso(nombre_programa);
         }
 
+    public ArrayList<String> getVariables_Ambito() {
+        return variables_Ambito;
+    }
+
+    public void setVariables_Ambito(ArrayList<String> variables_Ambito) {
+        this.variables_Ambito = variables_Ambito;
+    }
 }
