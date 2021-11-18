@@ -11,15 +11,8 @@ import compilador.Terceto;
 
 %%
 
-programa : ID {System.out.println(ambitoActual);
-ambitoActual=$1.sval;
-System.out.println("imprime al final"+ambitoActual);
- }BEGIN conjunto_sentencias_declarativas sentencia_ejecutable END ';'{ t.cambiarAmbitoTerceto($1.sval);
-                                                                                    System.out.println(ambitoActual);
-                                                                                    ambitoActual=$1.sval;
-                                                                                    System.out.println("imprime al final"+ambitoActual);
-                                                                                   t.agregarUsoVariablesTS($1.sval,"nombre_programa");
-                                                                                  }
+programa : ID {ambitoActual=$1.sval;}
+ BEGIN conjunto_sentencias_declarativas sentencia_ejecutable END ';'{t.agregarUsoVariablesTS($1.sval,"nombre_programa");}
 		;
 
 conjunto_sentencias_declarativas : sentencia_declarativa
@@ -43,42 +36,38 @@ error_sentencias_ejecutables : TRY ejecutable BEGIN ejecutable END ';' {Notifica
 		;
 
 sentencia_declarativa : tipo lista_variables ';'
-		| tipo FUNC ID '(' parametro ')' conjunto_sentencias_declarativas_funcion BEGIN conjunto_sentencias_ejecutables_funcion RETURN '(' expresion ')' END ';'{
+		| tipo FUNC ID {ambitoActual=ambitoActual+"."+$3.sval;}
+		'(' parametro ')' conjunto_sentencias_declarativas BEGIN conjunto_sentencias_ejecutables_funcion RETURN '(' expresion ')' END ';'{
                                                                                                                                                                     //Cambiara el ambito de las variables en caso de ser necesario
-                                                                                                                                                                    System.out.println("a"+ambitoActual);
-                                                                                                                                                                    ambitoActual=ambitoActual+"."+$3.sval;
-                                                                                                                                                                    System.out.println(ambitoActual);
-                                                                                                                                                                    t.cambiarAmbitoTerceto($3.sval);
+                                                                                                                                                                    StringBuilder reverse = new StringBuilder( ambitoActual);
+                                                                                                                                                                    StringBuilder aux = new StringBuilder(reverse.reverse().toString());
+                                                                                                                                                                    reverse = new StringBuilder(aux.substring(aux.lastIndexOf(".")+1, aux.length()));
+                                                                                                                                                                    aux = new StringBuilder(reverse.reverse().toString());
+                                                                                                                                                                    ambitoActual=aux.toString();
                                                                                                                                                                     t.agregarUsoVariablesTS($3.sval,"nombre_funcion");
-
 		                                                                                                                                                         }
-		| FUNC tipo ID '(' parametro ')' conjunto_sentencias_declarativas_funcion BEGIN PRE':' '(' condicion ')' ';' RETURN '(' expresion ')' ';' END ';'{t.cambiarAmbitoTerceto($3.sval);
-		                                                                                                                                                   t.agregarUsoVariablesTS($3.sval,"nombre_funcion");
-		                                                                                                                                                   System.out.println("a"+ambitoActual);
-		                                                                                                                                                   ambitoActual=ambitoActual+"."+$3.sval;
-		                                                                                                                                                   System.out.println(ambitoActual);
+		| FUNC tipo ID {ambitoActual=ambitoActual+"."+$3.sval;}
+		 '(' parametro ')' conjunto_sentencias_declarativas BEGIN PRE':' '(' condicion ')' ';' RETURN '(' expresion ')' ';' END ';'{            StringBuilder reverse = new StringBuilder( ambitoActual);
+                                                                                                                                                        StringBuilder aux = new StringBuilder(reverse.reverse().toString());
+                                                                                                                                                        reverse = new StringBuilder(aux.substring(aux.lastIndexOf(".")+1, aux.length()));
+                                                                                                                                                        aux = new StringBuilder(reverse.reverse().toString());
+                                                                                                                                                        ambitoActual=aux.toString();
+                                                                                                                                                        t.agregarUsoVariablesTS($3.sval,"nombre_funcion");
 		                                                                                                                                                   }
 		| FUNC ID ',' lista_variables';'{t.agregarUsoVariablesTS($2.sval,"variable");}
-		| error_sentencias_declarativas
 		;
 
-error_sentencias_declarativas : tipo ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta la lista de lista_variables");}
-		| FUNC ',' lista_variables ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta el ID");}
-		| FUNC tipo ID '(' ')' conjunto_sentencias_declarativas_funcion BEGIN PRE':' '(' condicion ')' ';' RETURN '(' expresion ')' ';' END ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta el parametro");}
-		| FUNC tipo ID '(' parametro ')' conjunto_sentencias_declarativas_funcion BEGIN ':' '(' condicion ')' ';' RETURN '(' expresion ')' ';' END ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta el PRE");}
-		;
 
-conjunto_sentencias_declarativas_funcion : tipo lista_variables ';'
-		;
+
 
 conjunto_sentencias_ejecutables_funcion : ejecutable
 		| conjunto_sentencias_ejecutables_funcion ejecutable
 		;
 
 lista_variables : ID {t.agregarUsoVariablesTS($1.sval,"variable");
-                      t.cambiarAmbitoVariable($1.sval);}
-		| lista_variables ',' ID{t.agregarUsoVariablesTS($3.sval,"variable");
-		                         t.cambiarAmbitoVariable($3.sval);}
+                       ts.cambiarNombre($1.sval);}
+		| lista_variables ',' ID { t.agregarUsoVariablesTS($3.sval,"variable");
+		                           ts.cambiarNombre($3.sval);}
 		;
 
 conjunto_sentencias_ejecutables : ejecutable
@@ -169,7 +158,7 @@ private  AnalizadorLex aLexico;
 private TablaSimbolos ts;
 private String aux_negacion = "";
 Terceto t;
-String ambitoActual;
+public  static String ambitoActual;
 
 public Parser (AnalizadorLex aLexico, TablaSimbolos ts) {
 this.ts= ts;

@@ -80,11 +80,7 @@ public class Terceto {
         }
     }
 
-    public void cambiarAmbitoTerceto(String variable) {
-        { // el que esta al final es que lee primero, lee de abajo para arriba
-            this.variables_Ambito.add(0,variable);
-        }
-    }
+
 
 
     // hay que setear el uso de la varibla como por ejemplo, variable, nombre funcion, nombre de parametro, etc

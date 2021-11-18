@@ -1,18 +1,19 @@
 programa
 BEGIN
-    FUNC y,z ;
-    DOUBLE FUNC funcionao ( DOUBLE x)
+   FUNC y,z ;
+    DOUBLE FUNC funcion1 ( DOUBLE x)
         CADENA a, b;
+        FUNC DOUBLE funcion2 ( DOUBLE x)
+                CADENA g, h;
+                BEGIN
+                    PRE : (X<3);
+                    RETURN (x + z) ;
+                END;
     BEGIN
         PRINT ( %string% )
         RETURN (x + z)
     END;
-    DOUBLE FUNC nofunciona ( DOUBLE x)
-            CADENA g, h;
-        BEGIN
-            PRINT ( %string% )
-            RETURN (x + z)
-        END;
+
     BEGIN
       x := z;
     END;

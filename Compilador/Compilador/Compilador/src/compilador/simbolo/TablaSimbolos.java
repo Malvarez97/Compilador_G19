@@ -58,6 +58,10 @@ import java.util.Map;
             }
             casilla.actualizarReferencias(1);
         }
+        public void cambiarNombre(String nombre){
+            Casilla aux = tablaSimbolos.get(nombre);
+            aux.setLexema(nombre+"."+Parser.ambitoActual);
+        }
 
         // Retorno la entrega dado un lexema
         public Casilla getEntrada(String lexema) {
