@@ -7,8 +7,6 @@ import compilador.util.CodigoFuente;
 
 import compilador.util.*;
 
-import java.util.ArrayList;
-
 public class Compilador {
     public static Parser parser ;
 
@@ -80,15 +78,6 @@ public class Compilador {
             AnalizadorLex lexico = new AnalizadorLex(codigo,ts);
             parser = new Parser(lexico,ts);
             parser.run();
-            //aca se recorre la lista generada en Terceto para ver si genera bien las variables
-            Terceto tercetoAux = new Terceto(null,null,null,null,ts);
-            ArrayList<String> listaGenerada = tercetoAux.getVariables_Ambito();
-            tercetoAux.cambiarAmbitoFuncion();
-            System.out.printf("La lista contiene: ");
-            for (String o : listaGenerada){
-                System.out.printf(o);
-                System.out.printf("");
-            }
             imprimirFinal(ts);
         }
         else {

@@ -27,6 +27,10 @@ public class Main {
 			System.out.println("Ingrese 12 si desea compilar ejemplo de Rangos Negativos");
 			System.out.println("Ingrese 13 si desea compilar ejemplo de TRY CATCH");
 			System.out.println("Ingrese 14 si desea compilar ejemplo con errores de FUNC");
+<<<<<<< HEAD
+=======
+
+>>>>>>> 515a6264eb4d7dedb908f675e6e74f4e54bb0e8a
 			Scanner opcion =new Scanner(System.in);
 			int num= opcion.nextInt();
 			switch (num){

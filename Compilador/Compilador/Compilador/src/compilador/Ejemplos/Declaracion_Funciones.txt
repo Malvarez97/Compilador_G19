@@ -1,7 +1,11 @@
 programa
 BEGIN
+<<<<<<< HEAD
    FUNC y,z ;
     DOUBLE FUNC funcion1 ( DOUBLE x)
+=======
+    DOUBLE FUNC funcionao ( DOUBLE x)
+>>>>>>> 515a6264eb4d7dedb908f675e6e74f4e54bb0e8a
         CADENA a, b;
         FUNC DOUBLE funcion2 ( DOUBLE x)
                 CADENA g, h;
@@ -11,11 +15,14 @@ BEGIN
                 END;
     BEGIN
         PRINT ( %string% )
-        RETURN (x + z)
+        RETURN (x + y)
     END;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 515a6264eb4d7dedb908f675e6e74f4e54bb0e8a
     BEGIN
-      x := z;
+      x := y;
     END;
 END;
 

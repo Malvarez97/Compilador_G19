@@ -1,6 +1,5 @@
 programa
 BEGIN
-    FUNC x,y ;
     DOUBLE FUNC funcion_error ()
         CADENA a, b;
     BEGIN

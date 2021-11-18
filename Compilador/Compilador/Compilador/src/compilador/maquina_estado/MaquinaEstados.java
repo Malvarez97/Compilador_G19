@@ -27,7 +27,6 @@ public class MaquinaEstados {
 		public AnalizadorLex getaLexico(){
 			return aLexico;
 		}
-
 	    private void inicMaquinaEstados(CodigoFuente cFuente, TablaSimbolos tablaS, TablaPalabrasReserv tablaPR) { /// Inicializo Acciones semanticas
 
 			/** AS0  Inic String vacio*/

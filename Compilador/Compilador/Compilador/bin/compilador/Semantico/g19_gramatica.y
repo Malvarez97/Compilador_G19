@@ -3,7 +3,6 @@ import compilador.AnalizadorLex;
 import compilador.Compilador;
 import compilador.simbolo.TablaSimbolos;
 import compilador.util.Notificacion;
-import compilador.Terceto;
 %}
 
 %token ID CADENA UNTIL IF THEN ELSE ENDIF PRINT AND OR FUNC RETURN BEGIN END BREAK CTE_ULONG CTE_DOUBLE DOUBLE ULONG REPEAT TRY CATCH ASIGNACION PRE MENOR_IGUAL MAYOR_IGUAL IGUAL_IGUAL DISTINTO
@@ -11,8 +10,12 @@ import compilador.Terceto;
 
 %%
 
+<<<<<<< HEAD
 programa : ID {ambitoActual=$1.sval;}
  BEGIN conjunto_sentencias_declarativas sentencia_ejecutable END ';'{t.agregarUsoVariablesTS($1.sval,"nombre_programa");}
+=======
+programa : ID BEGIN conjunto_sentencias_declarativas sentencia_ejecutable END ';'
+>>>>>>> 515a6264eb4d7dedb908f675e6e74f4e54bb0e8a
 		;
 
 conjunto_sentencias_declarativas : sentencia_declarativa
@@ -36,6 +39,7 @@ error_sentencias_ejecutables : TRY ejecutable BEGIN ejecutable END ';' {Notifica
 		;
 
 sentencia_declarativa : tipo lista_variables ';'
+<<<<<<< HEAD
 		| tipo FUNC ID {ambitoActual=ambitoActual+"."+$3.sval;}
 		'(' parametro ')' conjunto_sentencias_declarativas BEGIN conjunto_sentencias_ejecutables_funcion RETURN '(' expresion ')' END ';'{
                                                                                                                                                                     //Cambiara el ambito de las variables en caso de ser necesario
@@ -57,6 +61,20 @@ sentencia_declarativa : tipo lista_variables ';'
 		| FUNC ID ',' lista_variables';'{t.agregarUsoVariablesTS($2.sval,"variable");}
 		;
 
+=======
+		| tipo FUNC ID '(' parametro ')' conjunto_sentencias_declarativas_funcion BEGIN conjunto_sentencias_ejecutables_funcion RETURN '(' expresion ')' END ';'
+		| FUNC tipo ID '(' parametro ')' conjunto_sentencias_declarativas_funcion BEGIN PRE':' '(' condicion ')' ';' RETURN '(' expresion ')' ';' END ';'
+		| FUNC ID ',' lista_variables';'
+		| error_sentencias_declarativas
+		;
+
+error_sentencias_declarativas : tipo ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta la lista de lista_variables");}
+		| FUNC ',' lista_variables ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta el ID");}
+		| FUNC tipo ID '(' ')' conjunto_sentencias_declarativas_funcion BEGIN PRE':' '(' condicion ')' ';' RETURN '(' expresion ')' ';' END ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta el parametro");}
+		| tipo FUNC ID '('  ')' conjunto_sentencias_declarativas_funcion BEGIN conjunto_sentencias_ejecutables_funcion RETURN '(' expresion ')' END {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta el parametro");}
+		| FUNC tipo ID '(' parametro ')' conjunto_sentencias_declarativas_funcion BEGIN ':' '(' condicion ')' ';' RETURN '(' expresion ')' ';' END ';' {Notificacion.addError(aLexico.getLineaActual()," Error semántico en la linea : "  + aLexico.getLineaActual() + "| falta el PRE");}
+		;
+>>>>>>> 515a6264eb4d7dedb908f675e6e74f4e54bb0e8a
 
 
 
@@ -64,10 +82,15 @@ conjunto_sentencias_ejecutables_funcion : ejecutable
 		| conjunto_sentencias_ejecutables_funcion ejecutable
 		;
 
+<<<<<<< HEAD
 lista_variables : ID {t.agregarUsoVariablesTS($1.sval,"variable");
                        ts.cambiarNombre($1.sval);}
 		| lista_variables ',' ID { t.agregarUsoVariablesTS($3.sval,"variable");
 		                           ts.cambiarNombre($3.sval);}
+=======
+lista_variables : ID
+		| lista_variables ',' ID
+>>>>>>> 515a6264eb4d7dedb908f675e6e74f4e54bb0e8a
 		;
 
 conjunto_sentencias_ejecutables : ejecutable
@@ -150,21 +173,23 @@ factor : ID
         | '-' CTE_DOUBLE{ ts.cambiarNegativo($2.sval,aLexico); }
         ;
 
-parametro :tipo ID { t.agregarUsoVariablesTS($2.sval,"variable");}
+parametro :tipo ID
 		;
 
 %%
 private  AnalizadorLex aLexico;
 private TablaSimbolos ts;
 private String aux_negacion = "";
+<<<<<<< HEAD
 Terceto t;
 public  static String ambitoActual;
+=======
+
+>>>>>>> 515a6264eb4d7dedb908f675e6e74f4e54bb0e8a
 
 public Parser (AnalizadorLex aLexico, TablaSimbolos ts) {
 this.ts= ts;
 this.aLexico=aLexico;
-this.t=new Terceto(null,null,null,null,aLexico.getTs());
-
 }
 
 public int yylex() {
